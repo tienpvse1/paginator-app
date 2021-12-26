@@ -6,7 +6,6 @@ import { initSwaggerDoc } from './swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use(cookieParser());
-  app.enableCors();
   const config = app.get(ConfigService);
   app.setGlobalPrefix(config.get<string>('app.apiPrefix'));
   initSwaggerDoc(app, config);
