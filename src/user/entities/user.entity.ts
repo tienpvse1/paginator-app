@@ -1,10 +1,19 @@
+import { hashSync } from 'bcryptjs';
 import { Length, Min } from 'class-validator';
 import { BaseModel } from 'src/base/base.entity';
 import { Role } from 'src/decorators/role.decorator';
 import { Form } from 'src/form/entities/form.entity';
 import { Order } from 'src/order/entities/order.entity';
 import { Product } from 'src/product/entities/product.entity';
-import { Column, Entity, Index, OneToMany, OneToOne } from 'typeorm';
+import {
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  Entity,
+  Index,
+  OneToMany,
+  OneToOne,
+} from 'typeorm';
 
 @Entity()
 export class User extends BaseModel {
@@ -33,4 +42,10 @@ export class User extends BaseModel {
 
   @OneToMany(() => Order, (order) => order.user)
   orders: Order[];
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  hashPassword() {
+    this.password = hashSync(this.password, 10);
+  }
 }

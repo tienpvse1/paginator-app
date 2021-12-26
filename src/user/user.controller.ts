@@ -17,6 +17,7 @@ import { Public } from 'src/decorators/public.decorator';
 import { HasRoles, Role } from 'src/decorators/role.decorator';
 import { User as UserDecorator } from 'src/decorators/user.decorator';
 import { FindManyOptions } from 'typeorm';
+import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 import { UserService } from './user.service';
 @Controller('user')
@@ -29,7 +30,7 @@ export class UserController {
    */
   @Post()
   @Public()
-  create(@Body() user: User) {
+  create(@Body() user: CreateUserDto) {
     return this.userService.create(user);
   }
 

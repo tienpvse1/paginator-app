@@ -7,12 +7,15 @@ import {
   FindOneOptions,
   Repository,
 } from 'typeorm';
+import { BaseModel } from './base.entity';
 
 @EntityRepository()
-export class BaseRepository<T> extends Repository<T> {
-  async createItem(item: DeepPartial<T>) {
+export class BaseRepository<
+  Entity extends BaseModel,
+> extends Repository<Entity> {
+  async createItem(item: DeepPartial<Entity>) {
     const newItem = this.create(item);
-    return this.save(newItem);
+    return newItem.save();
   }
 
   async findItemById(id: string) {
@@ -21,7 +24,7 @@ export class BaseRepository<T> extends Repository<T> {
       throw new NotFoundException(`item with id ${id} not found`);
     return foundedItem;
   }
-  async findOneItem(filter: FindOneOptions<T>) {
+  async findOneItem(filter: FindOneOptions<Entity>) {
     const foundItem = await this.findOne(filter);
     if (foundItem == null || foundItem == undefined)
       throw new NotFoundException(
@@ -30,22 +33,22 @@ export class BaseRepository<T> extends Repository<T> {
     return foundItem;
   }
 
-  async findItems(filter: FindManyOptions<T>) {
+  async findItems(filter: FindManyOptions<Entity>) {
     const foundItems = await this.find(filter);
     return foundItems;
   }
 
   async paginateItems(
     options: IPaginationOptions,
-    searchOption?: FindManyOptions<T>,
+    searchOption?: FindManyOptions<Entity>,
   ) {
-    return paginate<T>(this, options, searchOption);
+    return paginate<Entity>(this, options, searchOption);
   }
 
-  async updateItem(item: Partial<T>, id: string) {
+  async updateItem(item: Partial<Entity>, id: string) {
     const itemToUpdate = await this.findItemById(id);
     Object.assign(itemToUpdate, item);
-    return this.save(itemToUpdate);
+    return itemToUpdate.save();
   }
 
   async deleteItem(id: string) {
