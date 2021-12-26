@@ -1,8 +1,8 @@
+import { BadRequestException } from '@nestjs/common';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
-import { FindManyOptions } from 'typeorm';
+import { DeepPartial, FindManyOptions, FindOneOptions } from 'typeorm';
 import { BaseModel } from './base.entity';
 import { BaseRepository } from './base.repository';
-
 export class CRUDService<
   Entity extends BaseModel,
   Repository extends BaseRepository<Entity>,
@@ -13,7 +13,7 @@ export class CRUDService<
     this.repository = repository;
   }
 
-  create(item: Entity) {
+  create(item: DeepPartial<Entity>) {
     return this.repository.createItem(item);
   }
   findById(id: string) {
@@ -30,6 +30,21 @@ export class CRUDService<
 
   findAll() {
     return this.repository.findItems({});
+  }
+
+  async customFind(filter: FindManyOptions<Entity>) {
+    try {
+      const result = await this.repository.find(filter);
+      return result;
+    } catch (error) {
+      throw new BadRequestException(
+        'filter not in correct format\n visit https://typeorm.io/#/find-options for more info',
+      );
+    }
+  }
+
+  async findOne(filter: FindOneOptions<Entity>) {
+    return this.repository.findOneItem(filter);
   }
 
   paginate(

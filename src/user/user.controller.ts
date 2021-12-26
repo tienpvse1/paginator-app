@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  DefaultValuePipe,
   Delete,
   Get,
   ParseIntPipe,
@@ -9,11 +10,13 @@ import {
   Query,
   Req,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
+import { Public } from 'src/decorators/public.decorator';
 import { HasRoles, Role } from 'src/decorators/role.decorator';
 import { User as UserDecorator } from 'src/decorators/user.decorator';
+import { FindManyOptions } from 'typeorm';
 import { User } from './entities/user.entity';
 import { UserService } from './user.service';
 @Controller('user')
@@ -25,6 +28,7 @@ export class UserController {
    * create account
    */
   @Post()
+  @Public()
   create(@Body() user: User) {
     return this.userService.create(user);
   }
@@ -35,8 +39,8 @@ export class UserController {
   @Get('paginate')
   @HasRoles(Role.ADMIN)
   paginateUser(
-    @Query('num', ParseIntPipe) num = 1,
-    @Query('size', ParseIntPipe) size = 10,
+    @Query('num', new DefaultValuePipe(1), ParseIntPipe) num = 1,
+    @Query('size', new DefaultValuePipe(10), ParseIntPipe) size = 10,
     @Req() req: Request,
   ) {
     const options: IPaginationOptions = {
@@ -52,6 +56,16 @@ export class UserController {
   @Get('')
   findOne(@UserDecorator('id') id: string) {
     return this.userService.findById(id);
+  }
+
+  /**
+   * custom getter
+   */
+  @Get('custom')
+  @ApiBody({ type: Object })
+  @ApiOperation({ description: 'custom getter, base on what you want' })
+  customGetter(@Body() filter: FindManyOptions<User>) {
+    return this.userService.customFind(filter);
   }
 
   /**

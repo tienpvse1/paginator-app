@@ -27,6 +27,7 @@ services:
       context: .
       dockerfile: ./Dockerfile
     environment:
+      # app environment 
       NODE_ENV: production
       # app configuration
       APP_PORT: 5000
@@ -36,6 +37,7 @@ services:
       MYSQL_ROOT_HOST: db
       MYSQL_DATABASE: paginator
       MYSQL_ROOT_PASSWORD: example
+      # jwt secret token
       SECRET_TOKEN: 1d655dfda71dd4a1687d71b1d18bc27cdba2adb3d99bd8fdb28d5f795bc1e54b3722c2476fca2a401b204128e412ee5f6bf819917c4a0d29c65397245a4e7a23
     ports:
       - 5000:5000

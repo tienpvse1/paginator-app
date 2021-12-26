@@ -1,8 +1,10 @@
 import { Length, Min } from 'class-validator';
 import { BaseModel } from 'src/base/base.entity';
 import { Role } from 'src/decorators/role.decorator';
+import { Form } from 'src/form/entities/form.entity';
+import { Order } from 'src/order/entities/order.entity';
 import { Product } from 'src/product/entities/product.entity';
-import { Column, Entity, Index, OneToMany } from 'typeorm';
+import { Column, Entity, Index, OneToMany, OneToOne } from 'typeorm';
 
 @Entity()
 export class User extends BaseModel {
@@ -25,4 +27,10 @@ export class User extends BaseModel {
 
   @OneToMany(() => Product, (product) => product.user)
   products: Product[];
+
+  @OneToOne(() => Form, (form) => form.user)
+  form: Form;
+
+  @OneToMany(() => Order, (order) => order.user)
+  orders: Order[];
 }

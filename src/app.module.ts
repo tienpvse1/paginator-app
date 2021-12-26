@@ -13,6 +13,9 @@ import { HttpExceptionFilter } from './filter/exception.filter';
 import { JwtAuthGuard } from './auth/guard/jwt.guard';
 import { ProductModule } from './product/product.module';
 import { RoleGuard } from './auth/guard/role.guard';
+import { FormModule } from './form/form.module';
+import { OrderModule } from './order/order.module';
+import { OrderDetailModule } from './order-detail/order-detail.module';
 
 @Module({
   imports: [
@@ -40,6 +43,9 @@ import { RoleGuard } from './auth/guard/role.guard';
     UserModule,
     AuthModule,
     ProductModule,
+    FormModule,
+    OrderModule,
+    OrderDetailModule,
   ],
   controllers: [AppController],
   providers: [

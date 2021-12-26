@@ -1,5 +1,7 @@
+import { nanoid } from 'nanoid';
 import {
   BaseEntity,
+  BeforeInsert,
   CreateDateColumn,
   DeleteDateColumn,
   PrimaryColumn,
@@ -15,4 +17,9 @@ export class BaseModel extends BaseEntity {
   updatedAt: Date;
   @DeleteDateColumn()
   deletedAt: Date;
+
+  @BeforeInsert()
+  createId() {
+    this.id = nanoid(7);
+  }
 }

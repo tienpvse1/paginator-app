@@ -21,4 +21,8 @@ export class ProductService extends CRUDService<Product, ProductRepository> {
     Object.assign(product, { user });
     return this.repository.createItem(product as Product);
   }
+
+  async findMany(ids: string[]) {
+    return this.repository.findByIds(ids);
+  }
 }

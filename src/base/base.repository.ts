@@ -1,7 +1,7 @@
 import { NotFoundException } from '@nestjs/common';
-import { nanoid } from 'nanoid';
 import { IPaginationOptions, paginate } from 'nestjs-typeorm-paginate';
 import {
+  DeepPartial,
   EntityRepository,
   FindManyOptions,
   FindOneOptions,
@@ -10,9 +10,8 @@ import {
 
 @EntityRepository()
 export class BaseRepository<T> extends Repository<T> {
-  async createItem(item: T) {
+  async createItem(item: DeepPartial<T>) {
     const newItem = this.create(item);
-    Object.assign(newItem, { id: nanoid(7) });
     return this.save(newItem);
   }
 
