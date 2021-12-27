@@ -30,6 +30,7 @@ import { OrderDetailModule } from './order-detail/order-detail.module';
         return {
           type: 'mysql',
           host: config.get<string>('database.host'),
+          port: config.get<number>('database.port'),
           username: 'root',
           password: config.get<string>('database.password'),
           database: config.get<string>('database.db'),

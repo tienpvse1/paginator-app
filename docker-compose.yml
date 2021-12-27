@@ -36,7 +36,8 @@ services:
       APP_VERSION: 0.1
       API_PREFIX: api/v1
       # database configuration
-      MYSQL_ROOT_HOST: db
+      MYSQL_ROOT_HOST: host.docker.internal
+      MYSQL_DATABASE_PORT: 3307
       MYSQL_DATABASE: paginator
       MYSQL_ROOT_PASSWORD: example
       # jwt secret token
