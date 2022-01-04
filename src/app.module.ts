@@ -16,6 +16,7 @@ import { RoleGuard } from './auth/guard/role.guard';
 import { FormModule } from './form/form.module';
 import { OrderModule } from './order/order.module';
 import { OrderDetailModule } from './order-detail/order-detail.module';
+import { TimeModule } from './time/time.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { OrderDetailModule } from './order-detail/order-detail.module';
     FormModule,
     OrderModule,
     OrderDetailModule,
+    TimeModule,
   ],
   controllers: [AppController],
   providers: [
